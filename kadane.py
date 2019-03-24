@@ -7,11 +7,26 @@ def kadane(arr, n, start, stop):
     return ans
 
 
-def max_kadane(arr, n):
+def max_kadane(arr):
+    left, right = 0, 0
+    n = len(arr)
     ans = arr[0]
     _sum = arr[0]
     for i in range(1, n):
-        _sum = max(arr[i], _sum + arr[i])
-        ans = max(_sum, ans)
-        # print(sum,ans)
-    return ans
+
+        if _sum + arr[i] <= arr[i]:
+            left = i
+            right = i
+            _sum = arr[i]
+        else:
+            _sum += arr[i]
+
+        if ans < _sum:
+            right = i
+            ans = _sum
+
+    return left, right, ans
+
+
+array = [1, -2, 4, 5, 20, -25, -26, 30]
+print(max_kadane(array))
