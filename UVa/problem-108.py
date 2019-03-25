@@ -3,15 +3,17 @@ from typing import List
 
 def custom_input_main():
     n = int(input())
-    mat_input = list(map(lambda item: int(item), input().split(' ')))
-
     matrix = []
-
     for i in range(n):
-        rows = mat_input[i * n: (i + 1) * n]
-        matrix += [rows]
+        row = list(map(lambda item: int(item), input().split(' ')))
+        matrix += [row]
+
+    # for i in range(n):
+    #     rows = mat_input[i * n: (i + 1) * n]
+    #     matrix += [rows]
 
     print(maximum_sum_rectangle(get_sum_rectangle(matrix, n), n))
+    return 0
 
 
 def fixed_input_main():
@@ -81,6 +83,4 @@ def get_sum_rectangle(matrix: List[List[int]], n: int) -> List[List[int]]:
     return sumed_square
 
 
-if __name__ == '__main__':
-    # fixed_input_main()
-    custom_input_main()
+custom_input_main()
