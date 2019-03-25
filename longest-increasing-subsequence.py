@@ -1,26 +1,37 @@
-from typing import List, Any
-from sys import maxsize
+from typing import List
 
 
-def _LIS(arr: List[int], index: int, n: int, prev: int, mem: List[Any]) -> int:
-    if mem[index] is not None:
-        return mem[index]
+def LIS(arr: List[int], n) -> int:
+    dp = [arr[0]]
 
-    if n == index:
-        return 0
+    for i in range(1, n):
+        print(dp)
+        if arr[i] < dp[0]:
+            dp[0] = arr[i]
+        elif arr[i] > dp[-1]:
+            dp += [arr[i]]
+        else:
+            dp[lower_bound(dp, arr[i])] = arr[i]
 
-    exclude = _LIS(arr, index + 1, n, prev, mem)
-    include = 0 if prev > arr[index] else _LIS(arr, index + 1, n, arr[index], mem) + 1
-    mem[index] = max(max(exclude, include), mem[index]) if mem[index] is not None else max(exclude, include)
-    return mem[index]
+    return len(dp)
 
 
-def LIS(arr: List[int]):
+def _lower_bound(arr: List[int], left: int, right: int, key: int):
+    if left >= right:
+        return left + 1 if left > right else left
+
+    mid = (left + right) // 2
+
+    if arr[mid] < key:
+        return _lower_bound(arr, mid + 1, right, key)
+    elif arr[mid] > key:
+        return _lower_bound(arr, left, mid - 1, key)
+
+
+def lower_bound(arr: List[int], key: int):
     n = len(arr)
-    # print(-maxsize)
-    return _LIS(arr, 0, n, -maxsize, [None for i in range(n + 1)])
+    return _lower_bound(arr, 0, n - 1, key)
 
 
-array = [0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15]
-
-print(LIS(array))
+arr = [0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15]
+print(LIS(arr, len(arr)))
